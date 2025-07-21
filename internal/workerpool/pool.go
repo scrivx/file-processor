@@ -11,6 +11,7 @@ type Result struct {
 	FilePath string
 	Output   interface{}
 	Err      error
+	WorkerID int
 }
 
 // StartWorkerPool lanza N workers que procesan archivos en paralelo.
@@ -25,11 +26,11 @@ func StartWorkerPool(workerCount int, fileChan <-chan string, resultChan chan<- 
 				fp, err := processorFactory()
 				if err != nil{
 					log.Printf("[worker %d] Error al crear el procesador: %s", workerID, err)
-					resultChan <- Result{FilePath: filePath, Err: err}
+					resultChan <- Result{FilePath: filePath, Err: err, WorkerID: workerID}
 					continue
 				}
 				output, err := fp.Process(filePath)
-				resultChan <- Result{FilePath: filePath, Output: output, Err: err}
+				resultChan <- Result{FilePath: filePath, Output: output, Err: err, WorkerID: workerID}
 			}
 		} (i)
 	}

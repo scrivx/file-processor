@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"sync"
+	"time"
 
 	filescanner "github.com/scrivx/file-processor/internal/file_scanner"
 	"github.com/scrivx/file-processor/internal/processor"
@@ -53,12 +54,32 @@ func main() {
 		close(resultChan)
 	}()
 
-	// Mostrar resultados
+
+	start := time.Now() // Tiempo inicial
+	var successCount, failCount int
+	var allResults []workerpool.Result
+	// Recolectar resultados
 	for result := range resultChan {
-		if result.Err != nil{
-			log.Printf("❌ Error procesando %s: %v", result.FilePath, result.Err)
+		allResults = append(allResults, result)
+		if result.Err != nil {
+			failCount++
 		} else {
-			fmt.Printf("✅ %s -> %v\n", result.FilePath, result.Output)
+			successCount++
 		}
 	}
+
+	fmt.Println("📄 Resultados del procesamiento:")
+	fmt.Println("─────────────────────────────────────────────")
+
+	for _, result := range allResults {
+	if result.Err != nil {
+		fmt.Printf("❌ [Worker %d] %s → ERROR: %v\n", result.WorkerID, result.FilePath, result.Err)
+	} else {
+		fmt.Printf("✅ [Worker %d] %s → Resultado: %v\n", result.WorkerID, result.FilePath, result.Output)
+	}
+}
+
+	fmt.Println("─────────────────────────────────────────────")
+	fmt.Printf("✔️  Completado en %s\n", time.Since(start))
+	fmt.Printf("📁 Archivos procesados: %d | 🟢 Exitosos: %d | 🔴 Fallidos: %d\n", len(allResults), successCount, failCount)
 }
