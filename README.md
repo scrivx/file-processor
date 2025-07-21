@@ -4,4 +4,26 @@ Herramienta de línea de comandos escrita en Go para procesar múltiples archivo
 
 ---
 
-## 📦 Estructura del Proyecto
+## 📝 Uso
+
+### 📦 Wordcount
+
+```bash
+go run ./cmd/fileprocessor --dir ./test/testdata --workers 4 --type wordcount
+```
+
+### 📦 Uppercase
+
+```bash
+go run ./cmd/fileprocessor --dir ./test/testdata --workers 4 --type uppercase
+```
+
+### 📦 Checksum
+
+```bash
+go run ./cmd/fileprocessor --dir ./test/testdata --workers 4 --type checksum
+```
+
+---
+
+## 📝 Ejemplos
