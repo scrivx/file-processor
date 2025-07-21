@@ -30,7 +30,7 @@ func main() {
 	resultChan := make(chan workerpool.Result, 100)
 
 	// Escaneo del directorio
-	go func() {
+	go func() { // Se inicia el escaneo de directorio en un goroutine
 		err := filescanner.ScanDir(*dir, fileChan)
 		if err != nil {
 			log.Fatalf("Error escaneando directorio: %v", err)

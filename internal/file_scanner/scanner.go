@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 )
 
+// ScanDir lee un directorio y lo envía a través de un canal
 func ScanDir(dirPath string, fileChan chan<- string) error {
 	entries, err := os.ReadDir(dirPath)
 	if err != nil {
