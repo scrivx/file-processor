@@ -1,4 +1,4 @@
-package filescaner
+package filescanner
 
 import (
 	"fmt"
